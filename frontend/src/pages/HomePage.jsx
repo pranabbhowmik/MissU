@@ -83,7 +83,7 @@ const HomePage = () => {
 
         <section>
           <div className="mb-6 sm:mb-8">
-            <div className="flex flex-col py-10 sm:flex-row items-start mt-6 sm:items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row items-start mt-6 sm:items-center justify-between gap-4">
               <div>
                 <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
                   Meet New Friend

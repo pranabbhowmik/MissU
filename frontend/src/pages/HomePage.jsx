@@ -33,7 +33,7 @@ const HomePage = () => {
     queryFn: getRecommendedUsers,
   });
 
-  const { data: outgoingFriendReqs } = useQuery({
+  const { data: outgoingFriendReqs = [], error: outgoingReqsError } = useQuery({
     queryKey: ["outgoingFriendReqs"],
     queryFn: getOutgoingFriendReqs,
   });
@@ -46,13 +46,26 @@ const HomePage = () => {
 
   useEffect(() => {
     const outgoingIds = new Set();
+    if (outgoingReqsError) {
+      console.error(
+        "Error fetching outgoing friend requests:",
+        outgoingReqsError
+      );
+      setOutgoingRequestsIds(outgoingIds);
+      return;
+    }
     if (outgoingFriendReqs && outgoingFriendReqs.length > 0) {
-      outgoingFriendReqs.forEach((req) => {
-        outgoingIds.add(req.recipient._id);
+      console.log("outgoingFriendReqs:", outgoingFriendReqs); // Debug log
+      outgoingFriendReqs.forEach((req, index) => {
+        if (req.recipient && req.recipient._id) {
+          outgoingIds.add(req.recipient._id);
+        } else {
+          console.warn(`Invalid recipient at index ${index}:`, req); // Log invalid entries
+        }
       });
       setOutgoingRequestsIds(outgoingIds);
     }
-  }, [outgoingFriendReqs]);
+  }, [outgoingFriendReqs, outgoingReqsError]);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
